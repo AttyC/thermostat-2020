@@ -37,9 +37,9 @@ describe("Thermostat", function(){
     });
     it("temp increase should not exceed 25 degrees if power saving mode is ON", function(){
       thermostat.getPowerSavingMode(); // on
-       for (let i = 0; i < 5; i++ ) {
+        for (let i = 0; i < 5; i++ ) {
         thermostat.up();
-       }
+        }
       expect(thermostat.getCurrentTemperature()).toEqual(25)
     })
     it("temp should not exceed 32 degrees if power saving mode is OFF", function(){
@@ -71,5 +71,29 @@ describe("Thermostat", function(){
     })
   })
 
-  
+  describe("Reset function", function(){
+    it("current temperature will be reset to 20 degrees when reset function called", function(){
+      thermostat.reset();
+      expect(thermostat.getCurrentTemperature()).toEqual(20);
+    })
+  })
+
+  describe("Current energy usage", function(){
+    it("current energy usage should be LOW if below 18", function(){
+      for (let i = 0; i < 3; i++ ) {
+        thermostat.down();
+      }
+      expect(thermostat.getCurrentEnergyUsage()).toEqual('Low usage')
+    })
+    it("current energy usage should be MEDIUM if between 18-25", function(){
+      thermostat.up();
+      expect(thermostat.getCurrentEnergyUsage()).toEqual('Medium usage')
+    })
+    it("current energy usage should be HIGH if above 25", function(){
+      for (let i = 0; i < 6; i++ ) {
+        thermostat.up();
+      }
+      expect(thermostat.getCurrentEnergyUsage()).toEqual('Medium usage')
+    })
+  })
 })
